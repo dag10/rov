@@ -1,0 +1,10 @@
+package com.minipenguin.rov;
+
+import javax.swing.JFrame;
+
+public class ROVClient {
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("ROV Controller");
+		frame.setDefailtCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}
