@@ -15,7 +15,7 @@ import de.hardcode.jxinput.event.JXInputDirectionalEventListener;
 import de.hardcode.jxinput.event.JXInputEventManager;
 
 enum AxisID {
-	Strafe,
+	Slide,
 	Pitch,
 	Throttle,
 	Rotation,
@@ -87,7 +87,7 @@ public class JoystickManager implements Runnable {
 		AxisID id = null;
 		
 		if (name.equals("X Axis"))
-			id = AxisID.Strafe;
+			id = AxisID.Slide;
 		else if (name.equals("Y Axis"))
 			id = AxisID.Pitch;
 		else if (name.equals("Z Axis"))
@@ -98,7 +98,7 @@ public class JoystickManager implements Runnable {
 			id = AxisID.Elevation;
 		
 		if (id != null)
-			client.axisUpdate(id, (double)(Math.round(axis.getValue() * 10)) / 1);
+			client.axisUpdate(id, (double)(Math.round(axis.getValue() * 100)) / 1);
 	}
 	
 	public void buttonChanged(Button button) {
@@ -107,7 +107,7 @@ public class JoystickManager implements Runnable {
 		String name = button.getName();
 		BtnID id = null;
 		
-		if (name.equals("Button 10"))
+		if (name.equals("Button 4"))
 			id = BtnID.ToggleLights;
 		
 		if (id != null)
@@ -156,7 +156,7 @@ class AxisListener implements JXInputAxisEventListener {
 		if (axis == null || manager == null) return;
 		
 		this.manager = manager;
-		JXInputEventManager.addListener(this, axis, 0.1);
+		JXInputEventManager.addListener(this, axis, 0.01);
 	}
 
 	public void changed(JXInputAxisEvent ev) {

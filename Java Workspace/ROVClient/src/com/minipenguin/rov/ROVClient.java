@@ -7,34 +7,32 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultStyledDocument;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ROVClient {
 	public static final int WINDOW_WIDTH	= 800;
 	public static final int WINDOW_HEIGHT	= 600;
 	public static final int PANEL_MARGIN	= 10;
 	public static final int CONTROL_MARGIN	= 5;
-	public static final int LABEL_HEIGHT	= 12;
+	public static final int LABEL_HEIGHT	= 15;
 	
 	private static SimpleDateFormat logDateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private JFrame window = null;
 	
 	private JPanel jsPanel = null;
-	private JLabel jsThrottleLabel = null;
-	private JLabel jsRotateLabel = null;
+	private static final Map<String, LableInfo> jsLabelMap = new HashMap<String, LableInfo>();
+	private static LableInfo lastJsLabel = null;
 	
 	private JPanel rovPanel = null;
-	private JLabel rovThruster1Label = null;
-	private JLabel rovThruster2Label = null;
+	private static final Map<String, LableInfo> rovLabelMap = new HashMap<String, LableInfo>();
+	private static LableInfo lastRovLabel = null;
 
 	private JPanel conPanel = null;
 	private JTextArea conOutput = null;
@@ -67,22 +65,6 @@ public class ROVClient {
 		jsPanel.setBorder(BorderFactory.createTitledBorder("Joystick"));
 		jsPanel.setLayout(null);
 		
-		jsPanel.add(jsThrottleLabel = new JLabel("Throttle: 0"));
-		jsThrottleLabel.setBounds(
-				jsThrottleLabel.getParent().getInsets().left + CONTROL_MARGIN,
-				jsThrottleLabel.getParent().getInsets().top + CONTROL_MARGIN,
-				jsThrottleLabel.getParent().getWidth() - CONTROL_MARGIN * 2,
-				LABEL_HEIGHT
-				);
-		
-		jsPanel.add(jsRotateLabel = new JLabel("Rotation: 0"));
-		jsRotateLabel.setBounds(
-				jsRotateLabel.getParent().getInsets().left + CONTROL_MARGIN,
-				CONTROL_MARGIN + jsThrottleLabel.getY() + jsThrottleLabel.getHeight(),
-				jsRotateLabel.getParent().getWidth() - CONTROL_MARGIN * 2,
-				LABEL_HEIGHT
-				);
-		
 		// Initialize rov panel
     	
 		window.getContentPane().add(rovPanel = new JPanel());
@@ -94,22 +76,6 @@ public class ROVClient {
 				);
 		rovPanel.setBorder(BorderFactory.createTitledBorder("ROV"));
 		rovPanel.setLayout(null);
-		
-		rovPanel.add(rovThruster1Label = new JLabel("Thruster 1: 0"));
-		rovThruster1Label.setBounds(
-				rovThruster1Label.getParent().getInsets().left + CONTROL_MARGIN,
-				rovThruster1Label.getParent().getInsets().top + CONTROL_MARGIN,
-				rovThruster1Label.getParent().getWidth() - CONTROL_MARGIN * 2,
-				LABEL_HEIGHT
-				);
-		
-		rovPanel.add(rovThruster2Label = new JLabel("Thruster 2: 0"));
-		rovThruster2Label.setBounds(
-				rovThruster2Label.getParent().getInsets().left + CONTROL_MARGIN,
-				CONTROL_MARGIN + rovThruster1Label.getY() + rovThruster1Label.getHeight(),
-				rovThruster2Label.getParent().getWidth() - CONTROL_MARGIN * 2,
-				LABEL_HEIGHT
-				);
 		
 		// Initialize console panel
     	
@@ -168,6 +134,19 @@ public class ROVClient {
 			}
 		});
 		
+		// Set default label text
+		
+		addJsLabel("Throttle", new LableInfo("Throttle"));
+		addJsLabel("Pitch", new LableInfo("Pitch"));
+		addJsLabel("Slide", new LableInfo("Slide"));
+		addJsLabel("Rotation", new LableInfo("Rotation"));
+		addJsLabel("Elevation", new LableInfo("Elevation"));
+		addJsLabel("ClawAction", new LableInfo("Claw Action", "None"));
+		addJsLabel("ToggleLights", new LableInfo("Toggle Lights", "Released"));
+		
+		addRovLabel("Thruster1", new LableInfo("Forward Thruster A"));
+		addRovLabel("Thruster2", new LableInfo("Forward Thruster B"));
+		
 		// Display window
 		
 		window.setVisible(true);
@@ -199,24 +178,157 @@ public class ROVClient {
 	}
 	
 	public void axisUpdate(AxisID axis, double value) {
+		if (Math.abs(value) < 5) value = 0;
+		
 		switch (axis) {
 		case Throttle:
-			jsThrottleLabel.setText("Throttle: " + (int)value);
+			value *= -1;
+			setJsLabel("Throttle", String.valueOf((int)value));
 			break;
 		case Rotation:
-			jsRotateLabel.setText("Rotation: " + (int)value);
+			setJsLabel("Rotation", String.valueOf((int)value));
+			break;
+		case Elevation:
+			value -= 50;
+			value *= 2;
+			setJsLabel("Elevation", String.valueOf((int)value));
+			break;
+		case Pitch:
+			setJsLabel("Pitch", String.valueOf((int)value));
+			break;
+		case Slide:
+			setJsLabel("Slide", String.valueOf((int)value));
 			break;
 		}
 	}
 	
 	public void buttonUpdate(BtnID button, boolean value) {
-		
+		switch (button) {
+		case ToggleLights:
+			setJsLabel("ToggleLights", (value ? "Pressed" : "Released"));
+			break;
+		}
 	}
 	
 	public void directionalUpdate(DirID dir) {
+		switch (dir) {
+		case OpenClaw:
+			setJsLabel("ClawAction", "Open");
+			break;
+		case CloseClaw:
+			setJsLabel("ClawAction", "Close");
+			break;
+		case ExtendClaw:
+			setJsLabel("ClawAction", "Extend");
+			break;
+		case RetractClaw:
+			setJsLabel("ClawAction", "Retract");
+			break;
+		case StopClaw:
+			setJsLabel("ClawAction", "None");
+			break;
+		}
+	}
+	
+	private void addJsLabel(String referenceName, LableInfo type) {
+		jsLabelMap.put(referenceName, type);
+
+
+		JLabel label = new JLabel();
+		jsPanel.add(label);
+		if (lastJsLabel == null)
+			label.setBounds(
+					label.getParent().getInsets().left + CONTROL_MARGIN,
+					label.getParent().getInsets().top + CONTROL_MARGIN,
+					label.getParent().getWidth() - CONTROL_MARGIN * 2,
+					LABEL_HEIGHT
+					);
+		else
+			label.setBounds(
+					label.getParent().getInsets().left + CONTROL_MARGIN,
+					CONTROL_MARGIN + lastJsLabel.getLabel().getY() + lastJsLabel.getLabel().getHeight(),
+					label.getParent().getWidth() - CONTROL_MARGIN * 2,
+					LABEL_HEIGHT
+					);
+
+		type.setLabel(label);
+		lastJsLabel = type;
 		
+		label.setText(type.getLabelName() + ": " + type.getDefaultValue());
+	}
+
+	private void setJsLabel(String name, String value) {
+		LableInfo label = jsLabelMap.get(name);
+		if (label == null) return;
+		
+		label.getLabel().setText(label.getLabelName() + ": " + value);
+	}
+	
+	private void addRovLabel(String referenceName, LableInfo type) {
+		rovLabelMap.put(referenceName, type);
+
+
+		JLabel label = new JLabel();
+		rovPanel.add(label);
+		if (lastRovLabel == null)
+			label.setBounds(
+					label.getParent().getInsets().left + CONTROL_MARGIN,
+					label.getParent().getInsets().top + CONTROL_MARGIN,
+					label.getParent().getWidth() - CONTROL_MARGIN * 2,
+					LABEL_HEIGHT
+					);
+		else
+			label.setBounds(
+					label.getParent().getInsets().left + CONTROL_MARGIN,
+					CONTROL_MARGIN + lastRovLabel.getLabel().getY() + lastRovLabel.getLabel().getHeight(),
+					label.getParent().getWidth() - CONTROL_MARGIN * 2,
+					LABEL_HEIGHT
+					);
+
+		type.setLabel(label);
+		lastRovLabel = type;
+		
+		label.setText(type.getLabelName() + ": " + type.getDefaultValue());
+	}
+
+	private void setRovLabel(String name, String value) {
+		LableInfo label = rovLabelMap.get(name);
+		if (label == null) return;
+		
+		label.getLabel().setText(label.getLabelName() + ": " + value);
 	}
 }
 
 enum LogType { Info, Warning, Error, Exception };
 enum LogDevice { Computer, Arduino };
+
+class LableInfo {
+	private String labelName = null;
+	private String defaultValue = null;
+	private JLabel label = null;
+	
+	public LableInfo(String labelName, String defaultValue) {
+		this.labelName = labelName;
+		this.defaultValue = defaultValue;
+	}
+	
+	public LableInfo(String labelName) {
+		this(labelName, "0");
+	}
+	
+	public String getLabelName() {
+		return labelName;
+	}
+	
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	
+	public JLabel getLabel() {
+		return label;
+	}
+	
+	public void setLabel(JLabel label) {
+		this.label = label;
+	}
+}
