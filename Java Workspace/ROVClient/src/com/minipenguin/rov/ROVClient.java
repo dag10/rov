@@ -4,8 +4,18 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ROVClient {
 	public static final int WINDOW_WIDTH	= 800;
@@ -13,6 +23,8 @@ public class ROVClient {
 	public static final int PANEL_MARGIN	= 10;
 	public static final int CONTROL_MARGIN	= 5;
 	public static final int LABEL_HEIGHT	= 12;
+	
+	private static SimpleDateFormat logDateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	private JFrame window = null;
 	
@@ -26,6 +38,8 @@ public class ROVClient {
 
 	private JPanel conPanel = null;
 	private JTextArea conOutput = null;
+	private JScrollPane conOutputScroll = null;
+	private boolean conAutoScroll = true;
 	
 	public static void main(String[] args) {
 		new ROVClient();
@@ -61,7 +75,7 @@ public class ROVClient {
 				LABEL_HEIGHT
 				);
 		
-		jsPanel.add(jsRotateLabel = new JLabel("Joystick rotation: 0"));
+		jsPanel.add(jsRotateLabel = new JLabel("Rotation: 0"));
 		jsRotateLabel.setBounds(
 				jsRotateLabel.getParent().getInsets().left + CONTROL_MARGIN,
 				CONTROL_MARGIN + jsThrottleLabel.getY() + jsThrottleLabel.getHeight(),
@@ -109,7 +123,13 @@ public class ROVClient {
 		conPanel.setBorder(BorderFactory.createTitledBorder("Console"));
 		conPanel.setLayout(null);
 		
-		conPanel.add(conOutput = new JTextArea());
+		conPanel.add(conOutput = new JTextArea() {
+			private static final long serialVersionUID = 1L;
+			public void scrollRectToVisible(Rectangle aRect) {
+				if (conAutoScroll)
+					super.scrollRectToVisible(aRect);
+			}
+		});
 		conOutput.setBounds(
 				conOutput.getParent().getInsets().left + CONTROL_MARGIN,
 				conOutput.getParent().getInsets().top + CONTROL_MARGIN,
@@ -126,20 +146,77 @@ public class ROVClient {
 						- conOutput.getParent().getInsets().bottom
 				)
 				);
-		//conOutput.setEditable(false);
+		conOutput.setEditable(false);
 		conOutput.setLineWrap(true);
 		conOutput.setWrapStyleWord(true);
 		conOutput.setAutoscrolls(true);
-		conOutput.setText("Hello, World!");
 		
-		JScrollPane conOutputScroll;
 		conPanel.add(conOutputScroll = new JScrollPane(conOutput));
 		conOutputScroll.setBounds(conOutput.getBounds());
 		conOutputScroll.setBorder(BorderFactory.createEtchedBorder());
 		conOutputScroll.setAutoscrolls(true);
+		conOutputScroll.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent event) {
+				JScrollBar scrollBar = (JScrollBar)event.getSource();
+				
+				if (!event.getValueIsAdjusting()) return;
+				
+				if ((scrollBar.getValue() + scrollBar.getVisibleAmount()) == scrollBar.getMaximum())
+					conAutoScroll = true;
+				else if (conAutoScroll)
+					conAutoScroll = false;
+			}
+		});
 		
 		// Display window
 		
 		window.setVisible(true);
+		
+		// Begin program
+
+		log(LogType.Info, LogDevice.Computer, "Program started");
+		
+		(new Thread(new JoystickManager(this))).start();
+	}
+
+	public void log(LogType type, LogDevice device, String message) {
+		if (type == null || device == null || message == null)
+			return;
+		
+		conOutput.append("[" + logDateFormat.format(Calendar.getInstance().getTime()) + "] ");
+		conOutput.append("[" + device.toString() + "] ");
+		conOutput.append("[" + type.toString() + "] ");
+		conOutput.append(message + "\n");
+		
+		if (conAutoScroll) conOutput.setCaretPosition(conOutput.getDocument().getLength() - 1);
+	}
+	
+	public void logException(Exception e) {
+		StackTraceElement[] trace = e.getStackTrace();
+		for (StackTraceElement element : trace)
+			log(LogType.Exception, LogDevice.Computer, element.toString());
+		e.printStackTrace();
+	}
+	
+	public void axisUpdate(AxisID axis, double value) {
+		switch (axis) {
+		case Throttle:
+			jsThrottleLabel.setText("Throttle: " + (int)value);
+			break;
+		case Rotation:
+			jsRotateLabel.setText("Rotation: " + (int)value);
+			break;
+		}
+	}
+	
+	public void buttonUpdate(BtnID button, boolean value) {
+		
+	}
+	
+	public void directionalUpdate(DirID dir) {
+		
 	}
 }
+
+enum LogType { Info, Warning, Error, Exception };
+enum LogDevice { Computer, Arduino };
