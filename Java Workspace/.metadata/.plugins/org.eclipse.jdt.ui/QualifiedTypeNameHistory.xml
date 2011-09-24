@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="javax.swing.JLabel"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="javax.swing.JPanel"/>
+<fullyQualifiedTypeName name="javax.swing.border.TitledBorder"/>
+<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
+<fullyQualifiedTypeName name="javax.swing.JTextArea"/>
+<fullyQualifiedTypeName name="javax.swing.JScrollPane"/>
+<fullyQualifiedTypeName name="javax.swing.JScrollBar"/>
+<fullyQualifiedTypeName name="java.awt.Rectangle"/>
+<fullyQualifiedTypeName name="java.awt.event.AdjustmentListener"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.JXInputManager"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.JXInputDevice"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.JTextPane"/>
+<fullyQualifiedTypeName name="javax.swing.text.DefaultStyledDocument"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputAxisEvent"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputAxisEventListener"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.test.AxisListener"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputEventManager"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.Axis"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputDirectionalEventListener"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.Directional"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.Button"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputDirectionalEvent"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputButtonEvent"/>
+<fullyQualifiedTypeName name="de.hardcode.jxinput.event.JXInputButtonEventListener"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+</qualifiedTypeNameHistroy>
