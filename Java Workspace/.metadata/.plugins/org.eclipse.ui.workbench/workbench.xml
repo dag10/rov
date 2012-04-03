@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="15" version="2.0">
+<workbench progressCount="26" version="2.0">
 <workbenchAdvisor/>
-<window height="768" maximized="true" width="1024" x="316" y="-10">
+<window height="968" maximized="true" width="1293" x="259" y="-16">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -10,6 +10,9 @@
 <coolItem id="group.file" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="122" y="22"/>
 <coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="61" y="22"/>
+<coolItem id="adt.actionSet.lint" itemType="typeToolBarContribution" x="38" y="22"/>
+<coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="129" y="22"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="99" y="22"/>
 <coolItem id="org.eclipse.mylyn.java.actionSet.browsing" itemType="typeToolBarContribution" x="38" y="22"/>
@@ -34,17 +37,22 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
+<part id="2"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SerialArduino.java" partName="SerialArduino.java" path="C:/Users/Drew Gottlieb/Desktop/rov/Java Workspace/ROVClient/src/com/minipenguin/rov/SerialArduino.java" title="SerialArduino.java" tooltip="ROVClient/src/com/minipenguin/rov/SerialArduino.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ROVClient/src/com/minipenguin/rov/SerialArduino.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="598" selectionTopPixel="34"/>
+</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ROVClient.java" partName="ROVClient.java" path="C:/Users/Drew Gottlieb/Desktop/rov/Java Workspace/ROVClient/src/com/minipenguin/rov/ROVClient.java" title="ROVClient.java" tooltip="ROVClient/src/com/minipenguin/rov/ROVClient.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ROVClient/src/com/minipenguin/rov/ROVClient.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4526" selectionTopPixel="2193"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JoystickManager.java" partName="JoystickManager.java" path="C:/Users/Drew Gottlieb/Desktop/rov/Java Workspace/ROVClient/src/com/minipenguin/rov/JoystickManager.java" title="JoystickManager.java" tooltip="ROVClient/src/com/minipenguin/rov/JoystickManager.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JoystickManager.java" partName="JoystickManager.java" path="C:/Users/Drew Gottlieb/Desktop/rov/Java Workspace/ROVClient/src/com/minipenguin/rov/JoystickManager.java" title="JoystickManager.java" tooltip="ROVClient/src/com/minipenguin/rov/JoystickManager.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/ROVClient/src/com/minipenguin/rov/JoystickManager.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4412" selectionTopPixel="2479"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1173" selectionTopPixel="578"/>
 </editor>
 </editors>
 <views>
@@ -96,10 +104,11 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
-<expanded>&#x0A;<category IMemento.internal.id="Errors"/>
+<expanded>&#x0A;<category IMemento.internal.id="Warnings (10 items)"/>
 <category IMemento.internal.id="Warnings"/>
+<category IMemento.internal.id="Errors"/>
 </expanded>
-<columnWidths org.eclipse.ui.ide.locationField="64" org.eclipse.ui.ide.markerType="94" org.eclipse.ui.ide.pathField="124" org.eclipse.ui.ide.resourceField="94" org.eclipse.ui.ide.severityAndDescriptionField="665"/>
+<columnWidths org.eclipse.ui.ide.locationField="0" org.eclipse.ui.ide.markerType="0" org.eclipse.ui.ide.pathField="0" org.eclipse.ui.ide.resourceField="0" org.eclipse.ui.ide.severityAndDescriptionField="0"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
@@ -172,6 +181,10 @@
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.doc.actionSet"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.tasks.ui.navigation"/>
+<alwaysOnActionSet id="adt.actionSet.wizards"/>
+<alwaysOnActionSet id="adt.actionSet.refactorings"/>
+<alwaysOnActionSet id="adt.actionSet.avdManager"/>
+<alwaysOnActionSet id="adt.actionSet.lint"/>
 <show_view_action id="org.eclipse.jdt.ui.PackageExplorer"/>
 <show_view_action id="org.eclipse.jdt.ui.TypeHierarchy"/>
 <show_view_action id="org.eclipse.jdt.ui.SourceView"/>
@@ -237,7 +250,7 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.2636917" ratioLeft="260" ratioRight="726" relationship="2" relative="left"/>
+<info part="org.eclipse.ui.editorss" ratio="0.15727949" ratioLeft="296" ratioRight="1586" relationship="2" relative="left"/>
 <info folder="true" part="bottom" ratio="0.67571884" ratioLeft="423" ratioRight="203" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
@@ -467,158 +480,97 @@
 <workingSets/>
 <navigationHistory>
 <editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/http_proxy_test/src/Proxy.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/http_proxy_test/src/ProxyThread.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/http_proxy_test/src/Proxy.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/BinaryScreenshot/src/Main.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/ROVClient/src/com/minipenguin/rov/SerialArduino.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/ROVClient/src/com/minipenguin/rov/ROVClient.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/ROVClient/src/com/minipenguin/rov/JoystickManager.java"/>
 </editors>
-<item historyLabel="ROVClient.java" index="0">
+<item historyLabel="Proxy.java" index="0">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1117" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1049" y="34"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1130" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1138" y="26"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="923" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
 <position/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7034" y="0"/>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="953" y="0"/>
 </item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2649" y="0"/>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="764" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="5738" y="0"/>
+<item historyLabel="Proxy.java" index="0">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1164" y="0"/>
+</item>
+<item historyLabel="Proxy.java" index="0">
+<position info="not_deleted" x="2119" y="0"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1164" y="0"/>
+</item>
+<item historyLabel="Proxy.java" index="0">
+<position info="not_deleted" x="0" y="3090"/>
+</item>
+<item historyLabel="ProxyThread.java" index="1">
+<position info="not_deleted" x="1130" y="0"/>
+</item>
+<item historyLabel="Proxy.java" index="2">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="Main.java" index="3">
 <position/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="6892" y="0"/>
-</item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2649" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="6755" y="0"/>
-</item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2649" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="6755" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
+<item historyLabel="Main.java" index="3">
 <position/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="6560" y="0"/>
+<item historyLabel="Main.java" index="3">
+<position info="not_deleted" x="916" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2649" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8346" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8944" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9642" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9641" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
+<item historyLabel="Main.java" index="3">
 <position info="not_deleted" x="930" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="974" y="0"/>
+<item historyLabel="Main.java" index="3">
+<position info="not_deleted" x="964" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="976" y="0"/>
+<item historyLabel="Main.java" index="3">
+<position info="not_deleted" x="973" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7247" y="0"/>
+<item historyLabel="Main.java" index="3">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7282" y="0"/>
+<item historyLabel="SerialArduino.java" index="4">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7288" y="0"/>
+<item historyLabel="ROVClient.java" index="5">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
+<item historyLabel="JoystickManager.java" index="6">
+<position info="not_deleted" x="1173" y="0"/>
 </item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9681" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9745" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9805" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="9164" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8799" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8114" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8182" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8191" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7961" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="7987" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="4928" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="8017" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="2043" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="5738" y="0"/>
-</item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2649" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="4649" y="0"/>
-</item>
-<item historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2402" y="0"/>
-</item>
-<item historyLabel="ROVClient.java" index="0">
-<position info="not_deleted" x="4526" y="0"/>
-</item>
-<item active="true" historyLabel="JoystickManager.java" index="1">
-<position info="not_deleted" x="2402" y="0"/>
+<item active="true" historyLabel="SerialArduino.java" index="4">
+<position info="not_deleted" x="0" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -630,6 +582,7 @@
 <trimItem IMemento.internal.id="right"/>
 </trimArea>
 <trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.mylyn.tasks.ui.trim.container"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 </trimArea>
 <trimArea IMemento.internal.id="1024">
@@ -640,17 +593,29 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="JXInputEventManager.class" tooltip="de.hardcode.jxinput.event.JXInputEventManager">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=ROVClient/jxinput.jar&lt;de.hardcode.jxinput.event(JXInputEventManager.class"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="buildAsJar.xml" tooltip="ROVClient/buildAsJar.xml">
-<persistable path="/ROVClient/buildAsJar.xml"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="JoystickManager.java" tooltip="ROVClient/src/com/minipenguin/rov/JoystickManager.java">
 <persistable path="/ROVClient/src/com/minipenguin/rov/JoystickManager.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ROVClient.java" tooltip="ROVClient/src/com/minipenguin/rov/ROVClient.java">
 <persistable path="/ROVClient/src/com/minipenguin/rov/ROVClient.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SerialArduino.java" tooltip="ROVClient/src/com/minipenguin/rov/SerialArduino.java">
+<persistable path="/ROVClient/src/com/minipenguin/rov/SerialArduino.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Main.java" tooltip="BinaryScreenshot/src/Main.java">
+<persistable path="/BinaryScreenshot/src/Main.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ProxyThread.java" tooltip="http_proxy_test/src/ProxyThread.java">
+<persistable path="/http_proxy_test/src/ProxyThread.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Proxy.java" tooltip="http_proxy_test/src/Proxy.java">
+<persistable path="/http_proxy_test/src/Proxy.java"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="JXInputEventManager.class" tooltip="de.hardcode.jxinput.event.JXInputEventManager">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=ROVClient/jxinput.jar&lt;de.hardcode.jxinput.event(JXInputEventManager.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="buildAsJar.xml" tooltip="ROVClient/buildAsJar.xml">
+<persistable path="/ROVClient/buildAsJar.xml"/>
 </file>
 </mruList>
 </workbench>

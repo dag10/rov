@@ -39,6 +39,8 @@ public class ROVClient {
 	private JScrollPane conOutputScroll = null;
 	private boolean conAutoScroll = true;
 	
+	private SerialArduino arduino;
+	
 	public static void main(String[] args) {
 		new ROVClient();
 	}
@@ -151,6 +153,10 @@ public class ROVClient {
 		
 		window.setVisible(true);
 		
+		// Start Arduino connection
+		arduino = new SerialArduino();
+		arduino.start();
+		
 		// Begin program
 
 		log(LogType.Info, LogDevice.Computer, "Program started");
@@ -195,6 +201,7 @@ public class ROVClient {
 			break;
 		case Pitch:
 			setJsLabel("Pitch", String.valueOf((int)value));
+			arduino.addCommand(new MotorSpeedCommand(4, (int)value));	// HAVING THIS BE HERE IS TEMPORARY
 			break;
 		case Slide:
 			setJsLabel("Slide", String.valueOf((int)value));
