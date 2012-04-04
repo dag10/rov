@@ -4,9 +4,14 @@ import java.io.*;
 import java.util.LinkedList;
 
 public class SerialArduino extends Thread {
-	private static String portName = "com7:";
+	private static String portName = "COM3:";
 	private LinkedList<ArduinoCommand> commands;
 	private boolean shouldStop = false;
+	private ROVClient client;
+	
+	public SerialArduino(ROVClient client) {
+		this.client = client;
+	}
 	
 	public void run() {
 		commands = new LinkedList<ArduinoCommand>();
@@ -35,9 +40,11 @@ public class SerialArduino extends Thread {
 					Thread.sleep(5);
 					continue;
 				}
+
 				
 				byte[] data = commands.poll().getData();
-				fos.write(data, 0, data.length);
+				//client.log(LogType.Info, LogDevice.Computer, "Sending: |" + new String(data) + "|");
+				fos.write(data);
 			}
 			
 			fos.close();

@@ -154,7 +154,7 @@ public class ROVClient {
 		window.setVisible(true);
 		
 		// Start Arduino connection
-		arduino = new SerialArduino();
+		arduino = new SerialArduino(this);
 		arduino.start();
 		
 		// Begin program

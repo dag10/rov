@@ -35,7 +35,7 @@ void setup() {
   for (int i = 0; i < NUM_MOTORS; i++)
     pinMode(motorPins[i], OUTPUT);
     
-  Serial.begin(serialBaud);
+  Serial3.begin(serialBaud);
   
   if (debugLED > 0)
     pinMode(debugLED, OUTPUT);
@@ -46,7 +46,7 @@ void setup() {
 /* Loop */
 
 void loop() {
-  if (Serial.available())
+  if (Serial3.available())
     scanSerial();
     
   /*
@@ -75,7 +75,7 @@ void scanSerial() {
   static int speedBufferIndex = 0;
   static int buffer = 0;
   
-  char input = Serial.read();
+  char input = Serial3.read();
   if (input == ',') {
     motorBuffer[motorBufferIndex] = 0; // Null terminator
     buffer = 1;
@@ -90,6 +90,7 @@ void scanSerial() {
       motorSpeeds[motor] = motorSpeed;
       analogWrite(motorPins[motor], motorSpeeds[motor]);
       //printSpeeds();
+      //digitalWrite(debugLED, motor == 4);
       if (motor == 4) digitalWrite(debugLED, motorSpeeds[4] > 127);
     }
   } else { // Number to be read into a buffer
@@ -106,13 +107,13 @@ void scanSerial() {
 /* Print motor speeds to Serial for debugging */
 void printSpeeds() {
   for (int i = 0; i < NUM_MOTORS; i++) {
-    Serial.print("pin[");
-    Serial.print(motorPins[i]);
-    Serial.print("] = ");
-    Serial.println(motorSpeeds[i]);
+    Serial3.print("pin[");
+    Serial3.print(motorPins[i]);
+    Serial3.print("] = ");
+    Serial3.println(motorSpeeds[i]);
   }
   
-  Serial.println("-------------------------------------");
+  Serial3.println("-------------------------------------");
 }
 
 /* Reset all motors to no speed (2.5V) */
