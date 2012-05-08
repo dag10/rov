@@ -21,6 +21,25 @@ public class ROVClient {
 	public static final int PANEL_MARGIN	= 10;
 	public static final int CONTROL_MARGIN	= 5;
 	public static final int LABEL_HEIGHT	= 15;
+
+	private int[] motorSpeeds = {0, 0, 0, 0, 0};
+	private int[] oldMotorSpeeds = {0, 0, 0, 0, 0};
+
+	private int[] desiredMotorSpeedsTilt = {0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsElevation = {0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsThrottle = {0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsTurn = {0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsSideways = {0, 0, 0, 0, 0};
+	
+	/*
+	 * Motor map:
+	 * 
+	 * 0 = Top front
+	 * 1 = Top back
+	 * 2 = Forward left
+	 * 3 = Forward right
+	 * 4 = Sideways
+	 */
 	
 	private static SimpleDateFormat logDateFormat = new SimpleDateFormat("HH:mm:ss");
 	
@@ -146,8 +165,11 @@ public class ROVClient {
 		addJsLabel("ClawAction", new LableInfo("Claw Action", "None"));
 		addJsLabel("ToggleLights", new LableInfo("Toggle Lights", "Released"));
 		
-		addRovLabel("Thruster1", new LableInfo("Forward Thruster A"));
-		addRovLabel("Thruster2", new LableInfo("Forward Thruster B"));
+		addRovLabel("ThrusterForwardL", new LableInfo("Forward Thruster L"));
+		addRovLabel("ThrusterForwardR", new LableInfo("Forward Thruster R"));
+		addRovLabel("ThrusterUpF", new LableInfo("Up Thruster F"));
+		addRovLabel("ThrusterUpB", new LableInfo("Up Thruster B"));
+		addRovLabel("ThrusterSide", new LableInfo("Side Thruster"));
 		
 		// Display window
 		
@@ -183,6 +205,37 @@ public class ROVClient {
 		e.printStackTrace();
 	}
 	
+	private void updateMotorSpeeds() {
+		for (int i = 0; i < motorSpeeds.length; i++) motorSpeeds[i] = 0;
+
+		addMotorSpeeds(desiredMotorSpeedsTilt);
+		addMotorSpeeds(desiredMotorSpeedsElevation);
+		addMotorSpeeds(desiredMotorSpeedsThrottle);
+		addMotorSpeeds(desiredMotorSpeedsTurn);
+		addMotorSpeeds(desiredMotorSpeedsSideways);
+		
+		for (int i = 0; i < motorSpeeds.length; i++) {
+			if (motorSpeeds[i] > 100) motorSpeeds[i] = 100;
+			if (motorSpeeds[i] < -100) motorSpeeds[i] = -100;
+			
+			if (motorSpeeds[i] != oldMotorSpeeds[i]) {
+				arduino.addCommand(new MotorSpeedCommand(i, (int)motorSpeeds[i]));
+				oldMotorSpeeds[i] = motorSpeeds[i];
+			}
+		}
+
+		setRovLabel("ThrusterUpF", String.valueOf(motorSpeeds[0]));
+		setRovLabel("ThrusterUpB", String.valueOf(motorSpeeds[1]));
+		setRovLabel("ThrusterForwardL", String.valueOf(motorSpeeds[2]));
+		setRovLabel("ThrusterForwardR", String.valueOf(motorSpeeds[3]));
+		setRovLabel("ThrusterSide", String.valueOf(motorSpeeds[4]));
+	}
+	
+	private void addMotorSpeeds(int[] desiredMotorSpeeds) {
+		for (int i = 0; i < motorSpeeds.length; i++)
+			motorSpeeds[i] += desiredMotorSpeeds[i];
+	}
+	
 	public void axisUpdate(AxisID axis, double value) {
 		if (Math.abs(value) < 5) value = 0;
 		
@@ -190,23 +243,29 @@ public class ROVClient {
 		case Throttle:
 			value *= -1;
 			setJsLabel("Throttle", String.valueOf((int)value));
+			desiredMotorSpeedsThrottle = new int[] {0, 0, (int)value, (int)value, 0};
 			break;
 		case Rotation:
 			setJsLabel("Rotation", String.valueOf((int)value));
+			desiredMotorSpeedsTurn = new int[] {0, 0, -(int)value, (int)value, 0};
 			break;
 		case Elevation:
 			value -= 50;
 			value *= 2;
 			setJsLabel("Elevation", String.valueOf((int)value));
+			desiredMotorSpeedsElevation = new int[] {-(int)value, -(int)value, 0, 0, 0};
 			break;
 		case Pitch:
 			setJsLabel("Pitch", String.valueOf((int)value));
-			arduino.addCommand(new MotorSpeedCommand(4, (int)value));	// HAVING THIS BE HERE IS TEMPORARY
+			desiredMotorSpeedsTilt = new int[] {-(int)value, (int)value, 0, 0, 0};
 			break;
 		case Slide:
 			setJsLabel("Slide", String.valueOf((int)value));
+			desiredMotorSpeedsSideways = new int[] {0, 0, 0, 0, (int)value};
 			break;
 		}
+		
+		updateMotorSpeeds();
 	}
 	
 	public void buttonUpdate(BtnID button, boolean value) {
