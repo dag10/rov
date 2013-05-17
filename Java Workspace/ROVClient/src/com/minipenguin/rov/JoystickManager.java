@@ -125,16 +125,16 @@ public class JoystickManager implements Runnable {
 				id = DirID.StopClaw;
 			} else {
 				switch (directional.getDirection()) {
-				case 0:
+				case 9000:
 					id = DirID.ExtendClaw;
 					break;
-				case 18000:
+				case 27000:
 					id = DirID.RetractClaw;
 					break;
-				case 27000:
+				case 18000:
 					id = DirID.CloseClaw;
 					break;
-				case 9000:
+				case 0:
 					id = DirID.OpenClaw;
 					break;
 				default:

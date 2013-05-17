@@ -22,14 +22,15 @@ public class ROVClient {
 	public static final int CONTROL_MARGIN	= 5;
 	public static final int LABEL_HEIGHT	= 15;
 
-	private int[] motorSpeeds = {0, 0, 0, 0, 0};
-	private int[] oldMotorSpeeds = {0, 0, 0, 0, 0};
+	private int[] motorSpeeds = {0, 0, 0, 0, 0, 0};
+	private int[] oldMotorSpeeds = {0, 0, 0, 0, 0, 0};
 
-	private int[] desiredMotorSpeedsTilt = {0, 0, 0, 0, 0};
-	private int[] desiredMotorSpeedsElevation = {0, 0, 0, 0, 0};
-	private int[] desiredMotorSpeedsThrottle = {0, 0, 0, 0, 0};
-	private int[] desiredMotorSpeedsTurn = {0, 0, 0, 0, 0};
-	private int[] desiredMotorSpeedsSideways = {0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsTilt = {0, 0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsElevation = {0, 0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsThrottle = {0, 0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsTurn = {0, 0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsSideways = {0, 0, 0, 0, 0, 0};
+	private int[] desiredMotorSpeedsClaw = {0, 0, 0, 0, 0, 0};
 	
 	/*
 	 * Motor map:
@@ -39,6 +40,7 @@ public class ROVClient {
 	 * 2 = Forward left
 	 * 3 = Forward right
 	 * 4 = Sideways
+	 * 5 = Claw
 	 */
 	
 	private static SimpleDateFormat logDateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -158,18 +160,19 @@ public class ROVClient {
 		// Set default label text
 		
 		addJsLabel("Throttle", new LableInfo("Throttle"));
-		addJsLabel("Pitch", new LableInfo("Pitch"));
+		addJsLabel("Claw", new LableInfo("Claw"));
 		addJsLabel("Slide", new LableInfo("Slide"));
 		addJsLabel("Rotation", new LableInfo("Rotation"));
 		addJsLabel("Elevation", new LableInfo("Elevation"));
-		addJsLabel("ClawAction", new LableInfo("Claw Action", "None"));
-		addJsLabel("ToggleLights", new LableInfo("Toggle Lights", "Released"));
+		//addJsLabel("ClawAction", new LableInfo("Claw Action", "None"));
+		//addJsLabel("ToggleLights", new LableInfo("Toggle Lights", "Released"));
 		
 		addRovLabel("ThrusterForwardL", new LableInfo("Forward Thruster L"));
 		addRovLabel("ThrusterForwardR", new LableInfo("Forward Thruster R"));
 		addRovLabel("ThrusterUpF", new LableInfo("Up Thruster F"));
 		addRovLabel("ThrusterUpB", new LableInfo("Up Thruster B"));
 		addRovLabel("ThrusterSide", new LableInfo("Side Thruster"));
+		addRovLabel("ClawMotor", new LableInfo("Claw Motor"));
 		
 		// Display window
 		
@@ -181,7 +184,7 @@ public class ROVClient {
 		
 		// Begin program
 
-		log(LogType.Info, LogDevice.Computer, "Program started");
+		log(LogType.Info, LogDevice.Computer, "Program started.");
 		
 		(new Thread(new JoystickManager(this))).start();
 	}
@@ -213,6 +216,7 @@ public class ROVClient {
 		addMotorSpeeds(desiredMotorSpeedsThrottle);
 		addMotorSpeeds(desiredMotorSpeedsTurn);
 		addMotorSpeeds(desiredMotorSpeedsSideways);
+		addMotorSpeeds(desiredMotorSpeedsClaw);
 		
 		for (int i = 0; i < motorSpeeds.length; i++) {
 			if (motorSpeeds[i] > 100) motorSpeeds[i] = 100;
@@ -229,6 +233,7 @@ public class ROVClient {
 		setRovLabel("ThrusterForwardL", String.valueOf(motorSpeeds[2]));
 		setRovLabel("ThrusterForwardR", String.valueOf(motorSpeeds[3]));
 		setRovLabel("ThrusterSide", String.valueOf(motorSpeeds[4]));
+		setRovLabel("ClawMotor", String.valueOf(motorSpeeds[5]));
 	}
 	
 	private void addMotorSpeeds(int[] desiredMotorSpeeds) {
@@ -240,28 +245,30 @@ public class ROVClient {
 		if (Math.abs(value) < 5) value = 0;
 		
 		switch (axis) {
-		case Throttle:
-			value *= -1;
-			setJsLabel("Throttle", String.valueOf((int)value));
-			desiredMotorSpeedsThrottle = new int[] {0, 0, (int)value, (int)value, 0};
+		case Throttle: // actually the claw, now
+			if (value < 0) value = 0;
+			setJsLabel("Claw", String.valueOf((int)value));
+			desiredMotorSpeedsClaw = new int[] {0, 0, 0, 0, 0, (int)value};
 			break;
 		case Rotation:
+			value *= 0.5; // was waaaay too sensitive
 			setJsLabel("Rotation", String.valueOf((int)value));
-			desiredMotorSpeedsTurn = new int[] {0, 0, -(int)value, (int)value, 0};
+			desiredMotorSpeedsTurn = new int[] {0, 0, -(int)value, -(int)value, 0, 0};
 			break;
 		case Elevation:
 			value -= 50;
 			value *= 2;
 			setJsLabel("Elevation", String.valueOf((int)value));
-			desiredMotorSpeedsElevation = new int[] {-(int)value, -(int)value, 0, 0, 0};
+			desiredMotorSpeedsElevation = new int[] {-(int)value, (int)value, 0, 0, 0, 0};
 			break;
-		case Pitch:
-			setJsLabel("Pitch", String.valueOf((int)value));
-			desiredMotorSpeedsTilt = new int[] {-(int)value, (int)value, 0, 0, 0};
+		case Pitch: // actually the throttle, now
+			value *= -1;
+			setJsLabel("Throttle", String.valueOf((int)value));
+			desiredMotorSpeedsThrottle = new int[] {0, 0, -(int)value, (int)value, 0, 0};
 			break;
 		case Slide:
 			setJsLabel("Slide", String.valueOf((int)value));
-			desiredMotorSpeedsSideways = new int[] {0, 0, 0, 0, (int)value};
+			desiredMotorSpeedsSideways = new int[] {0, 0, 0, 0, (int)value, 0};
 			break;
 		}
 		
@@ -279,21 +286,25 @@ public class ROVClient {
 	public void directionalUpdate(DirID dir) {
 		switch (dir) {
 		case OpenClaw:
-			setJsLabel("ClawAction", "Open");
+			//setJsLabel("ClawAction", "Open");
+			//desiredMotorSpeedsClaw = new int[] {0, 0, 0, 0, 0, 0};
 			break;
 		case CloseClaw:
-			setJsLabel("ClawAction", "Close");
+			//setJsLabel("ClawAction", "Close");
+			//desiredMotorSpeedsClaw = new int[] {0, 0, 0, 0, 0, 100};
 			break;
 		case ExtendClaw:
-			setJsLabel("ClawAction", "Extend");
+			//setJsLabel("ClawAction", "Extend");
 			break;
 		case RetractClaw:
-			setJsLabel("ClawAction", "Retract");
+			//setJsLabel("ClawAction", "Retract");
 			break;
 		case StopClaw:
-			setJsLabel("ClawAction", "None");
+			//setJsLabel("ClawAction", "None");
 			break;
 		}
+		
+		updateMotorSpeeds();
 	}
 	
 	private void addJsLabel(String referenceName, LableInfo type) {

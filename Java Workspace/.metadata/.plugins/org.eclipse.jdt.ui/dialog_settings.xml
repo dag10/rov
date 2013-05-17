@@ -25,7 +25,7 @@
 	<section name="JavaElementSearchActions">
 	</section>
 	<section name="BuildPathsPropertyPage">
-		<item value="2" key="pageIndex"/>
+		<item value="0" key="pageIndex"/>
 	</section>
 	<section name="JarPackageWizard">
 		<item value="false" key="JarPackageWizardPage.INCLUDE_DIRECTORY_ENTRIES"/>
@@ -65,6 +65,8 @@
 			<item value="C:\Users\Drew Gottlieb\Desktop\rov\Java Workspace\ROVClient\buildAsJar.xml"/>
 			<item value=".xml"/>
 		</list>
+	</section>
+	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="ClasspathContainerSelectionPage">
 		<item value="2" key="index"/>

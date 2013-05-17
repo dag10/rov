@@ -1,16 +1,18 @@
 /* Definitions */
 #define NUM_MOTORS 10
 #define BUFFER_SIZE 20
+#define DEBUG_MOTORS false
+#define SEND_FEEDBACK true
 
 /* Settings */
 
 const int motorPins[NUM_MOTORS] = {
-  2,  // 0 = Top front
-  3,  // 1 = Top back
-  4,  // 2 = Forward left
-  5,  // 3 = Forward right
-  6,  // 4 = Sideways
-  7,
+  3,  // 0 = Top front
+  5,  // 1 = Top back
+  6,  // 2 = Forward left
+  9,  // 3 = Forward right
+  10,  // 4 = Sideways
+  11,  // 5 = Claw
   8,
   9,
   10,
@@ -28,6 +30,7 @@ int trueMotorSpeed = 128;
 int readSerialNumber();
 void printSpeeds();
 void resetMotors();
+void sendFeedback(char * message);
 
 /* Setup */
 
@@ -35,18 +38,20 @@ void setup() {
   for (int i = 0; i < NUM_MOTORS; i++)
     pinMode(motorPins[i], OUTPUT);
     
-  Serial3.begin(serialBaud);
+  Serial.begin(serialBaud);
+  sendFeedback("STARTED\n");
   
   if (debugLED > 0)
     pinMode(debugLED, OUTPUT);
   
   resetMotors();
+  sendFeedback("INITIALIZED!\n");
 }
 
 /* Loop */
 
 void loop() {
-  if (Serial3.available())
+  if (Serial.available())
     scanSerial();
     
   /*
@@ -64,6 +69,12 @@ void loop() {
   }
   */
   
+  static int counter = 0;
+  if (counter++ > 100) {
+    counter = 0;
+    printSpeeds();
+  }
+  
   delay(10);
 }
 
@@ -75,7 +86,7 @@ void scanSerial() {
   static int speedBufferIndex = 0;
   static int buffer = 0;
   
-  char input = Serial3.read();
+  char input = Serial.read();
   if (input == ',') {
     motorBuffer[motorBufferIndex] = 0; // Null terminator
     buffer = 1;
@@ -89,9 +100,14 @@ void scanSerial() {
     if (motor >= 0 && motor < NUM_MOTORS) {
       motorSpeeds[motor] = motorSpeed;
       analogWrite(motorPins[motor], motorSpeeds[motor]);
-      //printSpeeds();
-      //digitalWrite(debugLED, motor == 4);
-      if (motor == 4) digitalWrite(debugLED, motorSpeeds[4] > 127);
+      printSpeeds();
+      if (SEND_FEEDBACK) {
+        Serial.print(motor);
+        Serial.print("=");
+        Serial.println(motorSpeed);
+      }
+      //digitalWrite(debugLED, motor == 1);
+      //if (motor == 4) digitalWrite(debugLED, motorSpeeds[4] > 127);
     }
   } else { // Number to be read into a buffer
     if (buffer == 0) {
@@ -104,16 +120,25 @@ void scanSerial() {
   }
 }
 
+/* Sends feedback */
+void sendFeedback(char * message) {
+  if (!SEND_FEEDBACK) return;
+  
+  Serial.print(message);
+}
+
 /* Print motor speeds to Serial for debugging */
 void printSpeeds() {
+  if (!DEBUG_MOTORS) return;
+  
   for (int i = 0; i < NUM_MOTORS; i++) {
-    Serial3.print("pin[");
-    Serial3.print(motorPins[i]);
-    Serial3.print("] = ");
-    Serial3.println(motorSpeeds[i]);
+    Serial.print("pin[");
+    Serial.print(motorPins[i]);
+    Serial.print("] = ");
+    Serial.println(motorSpeeds[i]);
   }
   
-  Serial3.println("-------------------------------------");
+  Serial.println("-------------------------------------");
 }
 
 /* Reset all motors to no speed (2.5V) */

@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.LinkedList;
 
 public class SerialArduino extends Thread {
-	private static String portName = "COM3:";
+	private static String portName = "COM6:";
 	private LinkedList<ArduinoCommand> commands;
 	private boolean shouldStop = false;
 	private ROVClient client;
